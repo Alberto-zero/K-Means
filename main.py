@@ -7,7 +7,7 @@ from sklearn.datasets import make_blobs
 # escoge bien la cantidad de centroides los datos son mas dispersos 
 #donde n_samples es la cantidad de puntos, center es la cant de clusters, cluster_std la dispersion , random_state para reproducibilidad
 #(como la semilla de un mundo de minecraft)
-X, y_verdadero = make_blobs(n_samples=300, centers=5, cluster_std=1, random_state=9)
+X, y_verdadero = make_blobs(n_samples=300, centers=6, cluster_std=1, random_state=7)
 
 
 
@@ -15,7 +15,7 @@ inercias = []
 rango_k = range(1, 20)
 
 for k in rango_k:
-    modelo_k = KMeans(n_clusters=k, init='random', n_init=10, random_state=42)
+    modelo_k = KMeans(n_clusters=k, init='random', n_init=10, random_state=None)
     modelo_k.fit(X)
     inercias.append(modelo_k.inertia_)
 
@@ -28,7 +28,7 @@ plt.xticks(rango_k)
 plt.grid(True)
 plt.show()
 
-k_optimo = 5
+k_optimo = 6
 plt.figure(figsize=(12, 4))
 pasos_iteracion = [1, 2, 3] 
 
@@ -46,9 +46,6 @@ for i, iteracion in enumerate(pasos_iteracion):
     if i == 0:
         plt.legend()
 
-plt.tight_layout()
-plt.show()
-
 
 modelo_final = KMeans(n_clusters=k_optimo, init='k-means++', n_init=10, random_state=42)
 modelo_final.fit(X)
@@ -62,6 +59,13 @@ nuevos_clientes = np.array([
 
 predicciones = modelo_final.predict(nuevos_clientes)
 
+
 print("--- PREDICCIONES DE NUEVOS CLIENTES ---")
 for i, cliente in enumerate(nuevos_clientes):
     print(f"Nuevo Cliente {i+1} con características {cliente} -> Asignado al Segmento/Cluster: {predicciones[i]}")
+
+plt.tight_layout()
+plt.show()
+
+
+
